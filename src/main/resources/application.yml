@@ -1,0 +1,30 @@
+server:
+    port: 9001
+
+logging:
+    level:
+        org.springframework.jdbc.core: TRACE
+
+spring:
+    application:
+        name: Auth-Server-Maintainer
+
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    issuer-uri: http://127.0.0.1:9000
+
+    datasource:
+        url: jdbc:postgresql://localhost:5432/authserver
+        username: postgres
+        password: postgres
+        driver-class-name: org.postgresql.Driver
+
+maintainer:
+    default-client:
+        create: true
+        client-id: "default-client-id"
+        client-secret: "default-client-secret"
+        scope: "api.consume"
+        access-token-time-to-live-in-sec: 3600
