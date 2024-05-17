@@ -1,7 +1,9 @@
 package cl.gfmn.authserver.controller;
 
 import cl.gfmn.authserver.model.Response;
+import cl.gfmn.authserver.model.user.ChangeUserPasswordRequest;
 import cl.gfmn.authserver.model.user.CreateUserRequest;
+import cl.gfmn.authserver.model.user.GetUserResponse;
 import cl.gfmn.authserver.service.UserService;
 import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -13,10 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @SecurityScheme(
         name = "BearerAuth",
@@ -47,6 +46,34 @@ public class UserController {
         Response response = userService.createUser(request);
 
         logger.info("POST - Create user consumption END, response = {}", gson.toJson(response));
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{username}")
+    @SecurityRequirement(name = "BearerAuth")
+    @PreAuthorize("hasAuthority('SCOPE_api.consume')")
+    ResponseEntity<GetUserResponse> getUser(@PathVariable(value = "username") String username) {
+
+        logger.info("GET - Get user consumption BEGIN");
+
+        GetUserResponse response = userService.getUser(username);
+
+        logger.info("GET - Get user consumption END, response = {}", gson.toJson(response));
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/change-password")
+    @SecurityRequirement(name = "BearerAuth")
+    @PreAuthorize("hasAuthority('SCOPE_api.consume')")
+    ResponseEntity<Response> changeUserPassword(@RequestBody ChangeUserPasswordRequest request) {
+
+        logger.info("PUT - Change user password consumption BEGIN");
+
+        Response response = userService.changeUserPassword(request);
+
+        logger.info("PUT - Change user password, response = {}", gson.toJson(response));
 
         return ResponseEntity.ok(response);
     }
