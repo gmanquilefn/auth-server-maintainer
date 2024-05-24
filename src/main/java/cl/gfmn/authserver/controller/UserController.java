@@ -6,6 +6,7 @@ import cl.gfmn.authserver.model.user.CreateUserRequest;
 import cl.gfmn.authserver.model.user.GetUserResponse;
 import cl.gfmn.authserver.service.UserService;
 import com.google.gson.Gson;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -37,7 +38,9 @@ public class UserController {
     private final Gson gson = new Gson();
 
     @PostMapping
-    @SecurityRequirement(name = "BearerAuth")
+    @Operation(summary = "Create an user",
+            description = "Create an user in auth server database",
+            security = @SecurityRequirement(name = "BearerAuth"))
     @PreAuthorize("hasAuthority('SCOPE_api.consume')")
     ResponseEntity<Response> createUser(@RequestBody CreateUserRequest request) {
 
@@ -51,7 +54,9 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    @SecurityRequirement(name = "BearerAuth")
+    @Operation(summary = "Obtain an user",
+            description = "Searches for an user in auth server database",
+            security = @SecurityRequirement(name = "BearerAuth"))
     @PreAuthorize("hasAuthority('SCOPE_api.consume')")
     ResponseEntity<GetUserResponse> getUser(@PathVariable(value = "username") String username) {
 
@@ -65,7 +70,9 @@ public class UserController {
     }
 
     @PutMapping("/change-password")
-    @SecurityRequirement(name = "BearerAuth")
+    @Operation(summary = "Change password for user",
+            description = "Change password for user in auth server database",
+            security = @SecurityRequirement(name = "BearerAuth"))
     @PreAuthorize("hasAuthority('SCOPE_api.consume')")
     ResponseEntity<Response> changeUserPassword(@RequestBody ChangeUserPasswordRequest request) {
 

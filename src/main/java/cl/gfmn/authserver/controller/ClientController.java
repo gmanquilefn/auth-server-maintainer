@@ -5,6 +5,7 @@ import cl.gfmn.authserver.model.client.CreateClientRequest;
 import cl.gfmn.authserver.service.ClientService;
 import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -44,7 +45,9 @@ public class ClientController {
     private final Gson gson = new Gson();
 
     @PostMapping
-    @SecurityRequirement(name = "BearerAuth")
+    @Operation(summary = "Create a client",
+            description = "Create a client in auth server database",
+            security = @SecurityRequirement(name = "BearerAuth"))
     @PreAuthorize("hasAuthority('SCOPE_api.consume')")
     ResponseEntity<Response> createClient(@RequestBody CreateClientRequest request) {
 

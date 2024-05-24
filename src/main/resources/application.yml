@@ -24,7 +24,7 @@ spring:
 maintainer:
     default-client:
         create: true
-        client-id: "default-client-id"
-        client-secret: "default-client-secret"
+        client-id: "maintainer-client-id"
+        client-secret: "maintainer-client-secret"
         scope: "api.consume"
         access-token-time-to-live-in-sec: 3600
